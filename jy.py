@@ -38,7 +38,7 @@ lista =[]
 #         lista.append(elem.get_attribute("href"))
 
 # El range es el n° del Div al que tiene que hacer referencia, cambia depende del numero de item en el pedido, al parecer siempre empieza en 5
-for i in range(5,52):
+for i in range(5,53):
     page = br.find_element_by_xpath('//*[@id="tt-pageContent"]/div/div/div/div/div/div['+str(i)+']/div[1]/a').get_attribute("href")
     lista.append(page)
 
@@ -59,8 +59,8 @@ pag=[]
 imges=[]
 segunda_fot=[]
 imagen_chic=[]
-def url(x):
-    return x
+# def url(x):
+#     return x
 #iterar por cada producto, sacar los datos de interes y registrar en el excel productos.xlsx
 for page in myset:
     br.get(page)
@@ -103,20 +103,7 @@ for page in myset:
         pag.append(page)
         
         categoria.append(category)
-        try :
-            carpeta= os.mkdir('./'+product_name)
-            imagen_principal= br.find_element_by_xpath('/html/body/div[9]/div/div').value_of_css_property("background-image")
         
-            print("esto es imagen principal",imagen_principal[5:-2])
-            
-            urllib.request.urlretrieve(imagen_principal[5:-2], './'+product_name)
-            time.sleep(3)
-            imagen_chica= br.find_element_by_xpath('//*[@id="smallGallery"]/div/div/li/a').get_attribute('data-image')
-            imagen_chic.append(carpeta+product_name)
-            urllib.request.urlretrieve(imagen_chica, carpeta)
-            
-        except :
-            pass
             
     
     
