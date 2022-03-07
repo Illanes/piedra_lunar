@@ -2,10 +2,10 @@ import os
 import time
 from selenium import webdriver
 import pandas as pd
-import urllib3
+import urllib.request
 
 br= webdriver.Chrome(r'C:\laragon\www\chromedriver_win32 (98.0.4)\chromedriver.exe')
-
+# url= ["https://www.joyasnevada.cl/producto/51196-colgante-corazon-flor-circones-multicolor/"]
 url= ["https://www.joyasnevada.cl/producto/51196-colgante-corazon-flor-circones-multicolor/",
 "https://www.joyasnevada.cl/producto/29886-cadena-ovalos-rolo/",
 "https://www.joyasnevada.cl/producto/45645-pulsera-ajustable-infinito-karma-circones/",
@@ -44,30 +44,32 @@ url= ["https://www.joyasnevada.cl/producto/51196-colgante-corazon-flor-circones-
 "https://www.joyasnevada.cl/producto/8589-aro-perla-8-mm/",
 "https://www.joyasnevada.cl/producto/49003-anillo-constelacion-circones-signo-tauro/",
 "https://www.joyasnevada.cl/producto/34322-aro-karma-con-circones/",
+"https://www.joyasnevada.cl/producto/50407-aro-bidu-triple-y-estrella/", 
+"https://www.joyasnevada.cl/producto/6809-aro-esfera-strass-8-mm/", 
+"https://www.joyasnevada.cl/producto/39381-aro-pasador-desigual-media-luna-y-estrella/"
 
 ]
+
 imagen_chic =[]
-
-
-
 
 for e in url:
     br.get(e)
-    product_name =br.find_element_by_xpath('//*[@id="tt-pageContent"]/div[2]/div[2]/div/div[2]/div/h1').text
-
-
+    
     try :
-        carpeta= '../'+product_name
-        os.mkdir(carpeta)
+        product_name =br.find_element_by_xpath('//*[@id="tt-pageContent"]/div[2]/div[2]/div/div[2]/div/h1').text
+        carpeta= './fotos/'+product_name
+        os.makedirs(carpeta, exist_ok=True)
+        time.sleep(1)
         imagen_principal= br.find_element_by_xpath('/html/body/div[9]/div/div').value_of_css_property("background-image")
     
         print("esto es imagen principal",imagen_principal[5:-2])
         
-        urllib3.request.urlretrieve(imagen_principal[5:-2], carpeta)
+        urllib.request.urlretrieve(imagen_principal[5:-2], carpeta+'/'+product_name+'.jpg')
         time.sleep(1)
         imagen_chica= br.find_element_by_xpath('//*[@id="smallGallery"]/div/div/li/a').get_attribute('data-image')
         imagen_chic.append(product_name)
-        urllib3.request.urlretrieve(imagen_chica, carpeta)
+        urllib.request.urlretrieve(imagen_chica, carpeta+'/'+product_name+'_chica.jpg')
                 
     except :
         print(e ,'no se pudo guardar')
+print ( "imagen chica :", imagen_chic)
